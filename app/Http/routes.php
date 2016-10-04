@@ -1,28 +1,20 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
-*/
+
 Route::get('auth/login', ['as' => 'login', 'uses' => 'Auth\AuthController@getLogin']);
 Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('auth/logout', ['as' => 'logout', 'uses' => 'Auth\AuthController@getLogout']);
 
-Route::get('auth/register', 'Auth\AuthController@getRegister');
+Route::get('auth/register', ['as' => 'register', 'uses' => 'Auth\AuthController@getRegister']);
 Route::post('auth/register', 'Auth\AuthController@postRegister');
 
 
-//this is the view for the form where the user will reset its password
-Route::get('password/reset/{token?}', 'Auth\PasswordController@showResetForm');
-//triggers the email to be sent that returns the initial view for the forget password
+//this triggers the email that will be sent to the user which contains special token to reset password
 Route::post('password/email', 'Auth\PasswordController@sendResetLinkEmail');
-//this is the post action for the form where the user will reset its password
+//this is the view where the user enters the email he uses to register for account
+Route::get('password/reset/{token?}', 'Auth\PasswordController@showResetForm');
+
+//this triggers the post action to reset the form
 Route::post('password/reset', 'Auth\PasswordController@reset');
 
 Route::resource('categories', 'CategoryController', ['except' => ['create']]);
@@ -42,11 +34,12 @@ Route::put('comments/{id}', ['uses' => 'CommentsController@update', 'as' => 'com
 Route::delete('comments/{id}', ['uses' => 'CommentsController@destroy', 'as' => 'comments.destroy']);
 Route::get('comments/{id}/delete', ['uses' => 'CommentsController@delete', 'as' => 'comments.delete']);
 
-
+//pages controller routes that handles the home ,contact and about page
 Route::get('contact', 'PagesController@getContact');
 Route::post('contact', 'PagesController@postContact');
 Route::get('about', 'PagesController@getAbout');
 Route::get('/', 'PagesController@getIndex');
+
 //CRUD route
 Route::resource('posts', 'PostController');
 

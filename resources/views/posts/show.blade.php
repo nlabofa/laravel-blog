@@ -65,7 +65,7 @@
 
 				<dl class="dl-horizontal">
 					<label>Created At:</label>
-					<p>{{ date('M j, Y h:ia', strtotime($post->created_at)) }}</p>
+					<p>{{ date('M j, Y h:ia', strtotime($post->created_at)) }}</p><!--{{$post->created_at->diffForHumans()}}-->
 				</dl>
 
 				<dl class="dl-horizontal">

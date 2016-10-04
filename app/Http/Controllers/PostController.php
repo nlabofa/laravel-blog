@@ -122,7 +122,11 @@ class PostController extends Controller
         // return the view and pass in the var we previously created
         return view('posts.edit')->withPost($post)->withCategories($cats)->withTags($tags2);
     }
-
+/**
+     * update the specified resource in the storage.
+     *
+     * @param  int  $id
+     */
 
     public function update(Request $request, $id)
     {
@@ -188,6 +192,11 @@ class PostController extends Controller
     }
 
    
+   /**
+     * delete the specified resource in the storage.
+     *
+     * @param  int  $id
+     */
     public function destroy($id)
     {
         $post = Post::find($id);

@@ -37,6 +37,7 @@
         @else
         
           <a href="{{ route('login') }}" class="btn btn-default">Login</a>
+          <a href="{{ route('register') }}" class="btn btn-default">Register</a>
 
         @endif
 
