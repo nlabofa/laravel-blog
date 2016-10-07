@@ -18,7 +18,7 @@
 		
 		</div>
 	</div>
-
+<!--Comment section-->
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
 			<h3 class="comments-title"><span class="glyphicon glyphicon-comment"></span>  {{ $post->comments()->count() }} Comments</h3>

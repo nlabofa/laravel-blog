@@ -12,28 +12,20 @@ use Purifier;
 use Session;
 use Image;
 use Storage;
+use Auth;
 
 class PostController extends Controller
 {
     public function __construct() {
         $this->middleware('auth');
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
          $posts = Post::orderBy('id', 'desc')->paginate(10);
         return view('posts.index')->withPosts($posts);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
@@ -43,12 +35,7 @@ class PostController extends Controller
     }
     
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+ 
     public function store(Request $request)
     {
         
@@ -68,13 +55,14 @@ class PostController extends Controller
         $post->slug = $request->slug;
         $post->category_id = $request->category_id;
         $post->body = Purifier::clean($request->body);
+        $post->user_id = Auth::user()->id;
 
         if ($request->hasFile('featured_img')) {
           $image = $request->file('featured_img');
           $filename = time() . '.' . $image->getClientOriginalExtension();
           $location = public_path('images/' . $filename);
-          Image::make($image)->resize(800, 400)->save($location);
-
+          Image::make($image)->resize(600, 300)->save($location);
+          //this stores the filename to the database
           $post->image = $filename;
         }
 
@@ -87,24 +75,14 @@ class PostController extends Controller
         return redirect()->route('posts.show', $post);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+  
     public function show($id)
     {
         $post = Post::find($id);
         return view('posts.show')->withPost($post);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+  
     public function edit($id)
     {
         $post = Post::find($id);
@@ -122,11 +100,7 @@ class PostController extends Controller
         // return the view and pass in the var we previously created
         return view('posts.edit')->withPost($post)->withCategories($cats)->withTags($tags2);
     }
-/**
-     * update the specified resource in the storage.
-     *
-     * @param  int  $id
-     */
+
 
     public function update(Request $request, $id)
     {
@@ -184,10 +158,10 @@ class PostController extends Controller
         }
 
 
-        // set flash data with success message
+      
         Session::flash('success', 'This post was successfully saved.');
 
-        // redirect with flash data to posts.show
+       
         return redirect()->route('posts.show', $post->id);
     }
 

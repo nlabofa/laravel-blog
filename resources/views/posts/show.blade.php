@@ -5,8 +5,12 @@
 @section('content')
 
 	<div class="row">
+	@if( $post->image != null)
 		<div class="col-md-8">
-		<img src="{{ asset('images/'.$post->image)}}"/>
+		<img src="{{asset('/images/' . $post->image)}}" width="600" height="300" />
+		</div>
+	@endif
+	        <div class="col-md-8">
 			<h1>{{ $post->title }}</h1>
 			
 			<p class="lead">{!! $post->body !!}</p>
@@ -18,7 +22,8 @@
 					<span class="label label-default">{{ $tag->name }}</span>
 				@endforeach
 			</div>
-
+<!--Comments view-->
+            
 			<div id="backend-comments" style="margin-top: 50px;">
 				<h3>Comments <small>{{ $post->comments()->count() }} total</small></h3>
 
@@ -38,10 +43,12 @@
 							<td>{{ $comment->name }}</td>
 							<td>{{ $comment->email }}</td>
 							<td>{{ $comment->comment }}</td>
+							@if($comment->post->user == Auth::user())
 							<td>
 								<a href="{{ route('comments.edit', $comment->id) }}" class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>
 								<a href="{{ route('comments.delete', $comment->id) }}" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
 							</td>
+							@endif
 						</tr>
 						@endforeach
 					</tbody>
@@ -73,8 +80,8 @@
 					<p>{{ date('M j, Y h:ia', strtotime($post->updated_at)) }}</p>
 				</dl>
 				<hr>
-				
-				<div class="row">
+				@if(Auth::user() == $post->user)
+				  <div class="row">
 					<div class="col-sm-6">
 						{!! Html::linkRoute('posts.edit', 'Edit', array($post->id), array('class' => 'btn btn-primary btn-block')) !!}
 					</div>
@@ -85,7 +92,9 @@
 
 						{!! Form::close() !!}
 					</div>
-				</div>
+				   </div>			
+				@endif
+				
 
 				<div class="row">
 					<div class="col-md-12">
