@@ -9,11 +9,12 @@ Route::get('auth/register', ['as' => 'register', 'uses' => 'Auth\AuthController@
 Route::post('auth/register', 'Auth\AuthController@postRegister');
 
 
-//this triggers the email that will be sent to the user which contains special token to reset password
+ 
+//This is a post action that allows  email to be sent to the user which contains special token to reset password
 Route::post('password/email', 'Auth\PasswordController@sendResetLinkEmail');
 //this is the view where the user enters the email he uses to register for account
 Route::get('password/reset/{token?}', 'Auth\PasswordController@showResetForm');
-
+//this is the view where the user will reset and enter new password after he has clicked on the confirmation link
 //this triggers the post action to reset the form
 Route::post('password/reset', 'Auth\PasswordController@reset');
 
