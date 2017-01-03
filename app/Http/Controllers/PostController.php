@@ -67,13 +67,13 @@ class PostController extends Controller
         }
 
         $post->save();
-
+        //notice that we explicitly define tag function seperately because we want it to be optional
         $post->tags()->sync($request->tags, false);
 
         Session::flash('success', 'The blog post was successfully saved!');
 
         return redirect()->route('posts.show', $post);
-    }
+    } 
 
   
     public function show($id)
